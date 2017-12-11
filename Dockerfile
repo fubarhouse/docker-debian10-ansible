@@ -9,6 +9,15 @@ RUN apt-get update \
        sudo curl gnupg2 \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
+    && apt-get clean
+
+# Install Ansible via pip.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       build-essential libffi-dev libssl-dev python-dev \
+       zlib1g-dev libncurses5-dev systemd python-setuptools curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
 # Installs nodejs
 RUN curl -sL http://deb.nodesource.com/setup_6.x | sh - && \
@@ -21,13 +30,8 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python;
 RUN pip install urllib3 pyOpenSSL ndg-httpsclient pyasn1 cryptography
 RUN pip install ansible
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-       build-essential libffi-dev libssl-dev python-pip python-dev \
-       zlib1g-dev libncurses5-dev systemd python-setuptools \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
-    && apt-get clean
+# General clean-up
+RUN apt-get clean
 
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
