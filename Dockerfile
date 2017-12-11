@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install dependencies.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       sudo \
+       sudo curl \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
 
@@ -18,7 +18,6 @@ RUN npm --version
 
 # Install Ansible via pip.
 RUN apt-get update
-RUN apt-get install curl --yes
 
 # Unfortunately, PIP 1.x simply won't do anymore...
 RUN curl https://bootstrap.pypa.io/get-pip.py | python;
