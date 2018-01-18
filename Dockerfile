@@ -20,6 +20,7 @@ RUN apt-get update \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
 # Install Ansible
+RUN apt-get update
 RUN apt-get install python-pip
 RUN pip install urllib3 pyOpenSSL ndg-httpsclient pyasn1 cryptography
 RUN pip install ansible
