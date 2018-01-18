@@ -5,28 +5,24 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Install dependencies.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       sudo curl gnupg2 \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
-    && apt-get clean
+    && apt-get install -y \
+    --no-install-recommends \
+    sudo curl gnupg2
 
-# Install Ansible via pip.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       build-essential libffi-dev libssl-dev python-dev \
-       zlib1g-dev libncurses5-dev systemd python-setuptools curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
+# Install Python dependencies.
+RUN apt-get install -y --no-install-recommends \
+    build-essential libffi-dev libssl-dev python-dev \
+    zlib1g-dev libncurses5-dev systemd python-setuptools curl
 
-# Install Ansible
-RUN apt-get update
-RUN apt-get install -y python-pip
-RUN pip install urllib3 pyOpenSSL ndg-httpsclient pyasn1 cryptography
-RUN pip install ansible
+# Install PIP & Ansible
+RUN apt-get install -y python-pip \
+    && pip install urllib3 pyOpenSSL ndg-httpsclient pyasn1 cryptography \
+    && pip install ansible
 
 # General clean-up
-RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* \
+    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
+    && apt-get clean
 
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
