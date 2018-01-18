@@ -19,8 +19,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
-# Unfortunately, PIP 1.x simply won't do anymore...
-RUN curl https://bootstrap.pypa.io/get-pip.py | python;
+# Install Ansible
+RUN apt-get install python-pip
 RUN pip install urllib3 pyOpenSSL ndg-httpsclient pyasn1 cryptography
 RUN pip install ansible
 
